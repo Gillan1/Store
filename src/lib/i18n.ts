@@ -77,6 +77,25 @@ export const translations = {
   cat_smartwatches: { ar: 'ساعات ذكية', en: 'Smartwatches' },
   cat_tablets: { ar: 'أجهزة لوحية', en: 'Tablets' },
   cat_phone_cases: { ar: 'جرابات الهاتف', en: 'Phone Cases' },
+  // Copy service (تصوير مستندات)
+  copyService: { ar: 'خدمة التصوير', en: 'Copy Service' },
+  copyType: { ar: 'نوع التصوير', en: 'Copy Type' },
+  copyColored: { ar: 'ملون', en: 'Colored' },
+  copyNormal: { ar: 'عادي (أبيض وأسود)', en: 'Normal (Black & White)' },
+  copyQuantity: { ar: 'عدد الصفحات', en: 'Number of Pages' },
+  copyPricePerPage: { ar: 'السعر لكل صفحة', en: 'Price per Page' },
+  addCopyService: { ar: 'إضافة خدمة تصوير', en: 'Add Copy Service' },
+  removeCopyService: { ar: 'إزالة خدمة التصوير', en: 'Remove Copy Service' },
+  copyServiceSummary: { ar: 'تصوير مستندات', en: 'Document Copying' },
+  // Bank receipt (إشعار بنكي)
+  bankReceipt: { ar: 'إشعار بنكي', en: 'Bank Receipt' },
+  uploadBankReceipt: { ar: 'رفع إشعار بنكي', en: 'Upload Bank Receipt' },
+  bankReceiptUploaded: { ar: 'تم رفع الإشعار البنكي', en: 'Bank receipt uploaded' },
+  viewBankReceipt: { ar: 'عرض الإشعار البنكي', en: 'View Bank Receipt' },
+  noBankReceipt: { ar: 'لا يوجد إشعار بنكي', en: 'No bank receipt' },
+  removeBankReceipt: { ar: 'إزالة الإشعار', en: 'Remove Receipt' },
+  takePhoto: { ar: 'التقاط صورة', en: 'Take Photo' },
+  changePhoto: { ar: 'تغيير الصورة', en: 'Change Photo' },
 } as const
 
 export type TranslationKey = keyof typeof translations

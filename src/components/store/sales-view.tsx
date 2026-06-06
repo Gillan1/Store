@@ -4,12 +4,18 @@ import { useState } from 'react'
 import { useSalesStore } from '@/store/sales-store'
 import { useLanguage } from '@/hooks/use-language'
 import { useAuthStore } from '@/store/auth-store'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { RecordSaleDialog } from './record-sale-dialog'
 import { motion, AnimatePresence } from 'framer-motion'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import {
   BarChart3,
   TrendingUp,
@@ -19,6 +25,9 @@ import {
   Plus,
   Trash2,
   Receipt,
+  Copy,
+  FileText,
+  Camera,
 } from 'lucide-react'
 
 export function SalesView() {
@@ -27,6 +36,7 @@ export function SalesView() {
   const { isAdmin } = useAuthStore()
   const [expandedDate, setExpandedDate] = useState<string | null>(null)
   const [saleDialogOpen, setSaleDialogOpen] = useState(false)
+  const [receiptImage, setReceiptImage] = useState<string | null>(null)
 
   if (!isAdmin) return null
 
@@ -230,6 +240,8 @@ export function SalesView() {
                                   </Button>
                                 </div>
                               </div>
+
+                              {/* Product items */}
                               <div className="space-y-1">
                                 {sale.items.map((item, i) => (
                                   <div
@@ -245,6 +257,40 @@ export function SalesView() {
                                   </div>
                                 ))}
                               </div>
+
+                              {/* Copy service info */}
+                              {sale.copyService && (
+                                <div className="mt-2 p-2 rounded-md bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800">
+                                  <div className="flex items-center justify-between text-xs">
+                                    <span className="flex items-center gap-1 font-medium text-blue-700 dark:text-blue-400">
+                                      <Copy className="h-3 w-3" />
+                                      {t('copyServiceSummary')}
+                                    </span>
+                                    <span className="font-medium text-blue-700 dark:text-blue-400">
+                                      {sale.copyService.totalPrice.toLocaleString()} {t('currency')}
+                                    </span>
+                                  </div>
+                                  <p className="text-xs text-muted-foreground mt-1">
+                                    {sale.copyService.type === 'colored' ? t('copyColored') : t('copyNormal')} - {sale.copyService.quantity} {language === 'ar' ? 'صفحة' : 'page(s)'} × {sale.copyService.unitPrice.toLocaleString()} {t('currency')}
+                                  </p>
+                                </div>
+                              )}
+
+                              {/* Bank receipt info */}
+                              {sale.bankReceipt && (
+                                <div className="mt-2">
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation()
+                                      setReceiptImage(sale.bankReceipt || null)
+                                    }}
+                                    className="flex items-center gap-1.5 text-xs font-medium text-amber-600 dark:text-amber-400 hover:underline"
+                                  >
+                                    <Camera className="h-3 w-3" />
+                                    {t('viewBankReceipt')}
+                                  </button>
+                                </div>
+                              )}
                             </div>
                           ))}
                         </div>
@@ -259,6 +305,27 @@ export function SalesView() {
       )}
 
       <RecordSaleDialog open={saleDialogOpen} onOpenChange={setSaleDialogOpen} />
+
+      {/* Bank Receipt Preview Dialog */}
+      <Dialog open={!!receiptImage} onOpenChange={(open) => { if (!open) setReceiptImage(null) }}>
+        <DialogContent className="sm:max-w-lg" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <FileText className="h-5 w-5 text-amber-600" />
+              {t('bankReceipt')}
+            </DialogTitle>
+          </DialogHeader>
+          {receiptImage && (
+            <div className="rounded-md overflow-hidden border">
+              <img
+                src={receiptImage}
+                alt={t('bankReceipt')}
+                className="w-full object-contain max-h-[70vh] bg-white"
+              />
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

@@ -11,10 +11,19 @@ export interface SaleItem {
   totalPrice: number
 }
 
+export interface CopyServiceItem {
+  quantity: number
+  type: 'colored' | 'normal'
+  unitPrice: number
+  totalPrice: number
+}
+
 export interface DailySale {
   id: string
   date: string
   items: SaleItem[]
+  copyService?: CopyServiceItem
+  bankReceipt?: string // base64 encoded image
   totalAmount: number
   createdAt: string
 }
