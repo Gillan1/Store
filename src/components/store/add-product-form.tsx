@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useProductStore } from '@/store/product-store'
+import { useProductStore, categories, type Category } from '@/store/product-store'
 import { useLanguage } from '@/hooks/use-language'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -18,6 +18,7 @@ export function AddProductForm() {
   const [nameEn, setNameEn] = useState('')
   const [price, setPrice] = useState('')
   const [image, setImage] = useState('/phone.png')
+  const [category, setCategory] = useState<Category>('phones')
   const [descriptionAr, setDescriptionAr] = useState('')
   const [descriptionEn, setDescriptionEn] = useState('')
 
@@ -32,6 +33,7 @@ export function AddProductForm() {
       nameEn: nameEn.trim(),
       price: parseFloat(price),
       image: image || '/phone.png',
+      category,
       descriptionAr: descriptionAr.trim() || undefined,
       descriptionEn: descriptionEn.trim() || undefined,
     })
@@ -41,6 +43,7 @@ export function AddProductForm() {
     setNameEn('')
     setPrice('')
     setImage('/phone.png')
+    setCategory('phones')
     setDescriptionAr('')
     setDescriptionEn('')
   }
@@ -80,7 +83,7 @@ export function AddProductForm() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label htmlFor="price">{t('price')}</Label>
               <Input
@@ -103,6 +106,21 @@ export function AddProductForm() {
                 placeholder={t('imageUrl')}
                 dir="ltr"
               />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="category">{t('category')}</Label>
+              <select
+                id="category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value as Category)}
+                className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              >
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.icon} {language === 'ar' ? cat.nameAr : cat.nameEn}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 

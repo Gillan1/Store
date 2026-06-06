@@ -2,7 +2,7 @@
 
 import { useLanguage } from '@/hooks/use-language'
 import { useAuthStore } from '@/store/auth-store'
-import { type Product } from '@/store/product-store'
+import { type Product, categories } from '@/store/product-store'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -21,6 +21,12 @@ export function ProductCard({ product, onRecordSale, index }: ProductCardProps) 
 
   const name = language === 'ar' ? product.nameAr : product.nameEn
   const description = language === 'ar' ? product.descriptionAr : product.descriptionEn
+  const categoryInfo = categories.find((c) => c.id === product.category)
+  const categoryName = categoryInfo
+    ? language === 'ar'
+      ? categoryInfo.nameAr
+      : categoryInfo.nameEn
+    : ''
 
   return (
     <motion.div
@@ -37,6 +43,12 @@ export function ProductCard({ product, onRecordSale, index }: ProductCardProps) 
           />
           <Badge className="absolute top-3 end-3 bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg">
             {product.price.toLocaleString()} {t('currency')}
+          </Badge>
+          <Badge
+            variant="outline"
+            className="absolute bottom-3 start-3 bg-white/90 dark:bg-gray-900/90 text-xs backdrop-blur-sm"
+          >
+            {categoryInfo?.icon} {categoryName}
           </Badge>
         </div>
         <CardContent className="p-4 space-y-2">

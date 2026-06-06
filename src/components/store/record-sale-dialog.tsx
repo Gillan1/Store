@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useProductStore, type Product } from '@/store/product-store'
 import { useSalesStore, type SaleItem } from '@/store/sales-store'
 import { useLanguage } from '@/hooks/use-language'
@@ -29,18 +29,14 @@ export function RecordSaleDialog({ open, onOpenChange, preselectedProduct }: Rec
   const { addSale } = useSalesStore()
   const { t, language } = useLanguage()
 
-  const [selectedProductId, setSelectedProductId] = useState<string>('')
+  const [selectedProductId, setSelectedProductId] = useState<string>(preselectedProduct?.id || '')
   const [quantity, setQuantity] = useState<number>(1)
   const [items, setItems] = useState<SaleItem[]>([])
 
-  // Sync preselectedProduct when dialog opens
-  useEffect(() => {
-    if (open && preselectedProduct) {
-      setSelectedProductId(preselectedProduct.id)
-    }
-  }, [open, preselectedProduct])
+  // When dialog opens with preselected product, use it
+  const effectiveSelectedId = open && preselectedProduct ? preselectedProduct.id : selectedProductId
 
-  const selectedProduct = products.find((p) => p.id === selectedProductId)
+  const selectedProduct = products.find((p) => p.id === effectiveSelectedId)
   const productName = (p: Product) => (language === 'ar' ? p.nameAr : p.nameEn)
 
   const handleAddToList = () => {
@@ -120,7 +116,7 @@ export function RecordSaleDialog({ open, onOpenChange, preselectedProduct }: Rec
           {/* Product selector */}
           <div className="space-y-2">
             <select
-              value={selectedProductId}
+              value={effectiveSelectedId}
               onChange={(e) => setSelectedProductId(e.target.value)}
               disabled={!!preselectedProduct}
               className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useProductStore, type Product } from '@/store/product-store'
+import { useProductStore, type Product, categories } from '@/store/product-store'
 import { useAuthStore } from '@/store/auth-store'
 import { useLanguage } from '@/hooks/use-language'
 import { useTheme } from 'next-themes'
@@ -24,7 +24,6 @@ import { AddProductForm } from './add-product-form'
 import { toast } from 'sonner'
 import { motion } from 'framer-motion'
 import {
-  Settings,
   Trash2,
   Package,
   Sun,
@@ -51,6 +50,14 @@ export function SettingsView() {
   }
 
   const productName = (p: Product) => (language === 'ar' ? p.nameAr : p.nameEn)
+  const getCategoryName = (p: Product) => {
+    const cat = categories.find((c) => c.id === p.category)
+    return cat ? (language === 'ar' ? cat.nameAr : cat.nameEn) : ''
+  }
+  const getCategoryIcon = (p: Product) => {
+    const cat = categories.find((c) => c.id === p.category)
+    return cat?.icon || ''
+  }
 
   return (
     <div className="space-y-6 p-4">
@@ -95,7 +102,7 @@ export function SettingsView() {
                             {productName(product)}
                           </p>
                           <p className="text-xs text-muted-foreground">
-                            {product.price.toLocaleString()} {t('currency')}
+                            {getCategoryIcon(product)} {getCategoryName(product)} • {product.price.toLocaleString()} {t('currency')}
                           </p>
                         </div>
                         <Button

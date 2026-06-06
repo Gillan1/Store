@@ -30,7 +30,7 @@ export const translations = {
   cancel: { ar: 'إلغاء', en: 'Cancel' },
   confirm: { ar: 'تأكيد', en: 'Confirm' },
   save: { ar: 'حفظ', en: 'Save' },
-  currency: { ar: 'ر.س', en: 'SAR' },
+  currency: { ar: 'ج.س', en: 'SDG' },
   guestMessage: { ar: 'أنت ضيف - عرض فقط', en: 'You are a guest - View only' },
   productNameAr: { ar: 'اسم المنتج (عربي)', en: 'Product Name (Arabic)' },
   productNameEn: { ar: 'اسم المنتج (إنجليزي)', en: 'Product Name (English)' },
@@ -61,6 +61,22 @@ export const translations = {
   saleTotal: { ar: 'إجمالي البيع', en: 'Sale Total' },
   emptyCart: { ar: 'السلة فارغة', en: 'Cart is empty' },
   productPrice: { ar: 'سعر المنتج', en: 'Product Price' },
+  // Category-related translations
+  category: { ar: 'التصنيف', en: 'Category' },
+  allCategories: { ar: 'الكل', en: 'All' },
+  outOfStock: { ar: 'نفدت الكمية', en: 'Out of Stock' },
+  outOfStockMessage: {
+    ar: 'نفدت الكمية المتوفرة حالياً من هذا القسم. سيتم توفير المزيد قريباً!',
+    en: 'Currently out of stock in this category. More items will be available soon!',
+  },
+  // Categories
+  cat_phones: { ar: 'هواتف', en: 'Phones' },
+  cat_chargers: { ar: 'شواحن وكابلات', en: 'Chargers & Cables' },
+  cat_headphones: { ar: 'سماعات', en: 'Headphones' },
+  cat_accessories: { ar: 'إكسسوارات', en: 'Accessories' },
+  cat_smartwatches: { ar: 'ساعات ذكية', en: 'Smartwatches' },
+  cat_tablets: { ar: 'أجهزة لوحية', en: 'Tablets' },
+  cat_phone_cases: { ar: 'جرابات الهاتف', en: 'Phone Cases' },
 } as const
 
 export type TranslationKey = keyof typeof translations
