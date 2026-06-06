@@ -7,6 +7,7 @@ import { useLanguage } from '@/hooks/use-language'
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogFooter,
@@ -110,6 +111,9 @@ export function RecordSaleDialog({ open, onOpenChange, preselectedProduct }: Rec
             <ShoppingCart className="h-5 w-5 text-emerald-600" />
             {t('recordSale')}
           </DialogTitle>
+          <DialogDescription className="sr-only">
+            {t('recordSale')}
+          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
