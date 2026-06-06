@@ -1,12 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useProductStore, type Product, type Category, categories } from '@/store/product-store'
 import { useLanguage } from '@/hooks/use-language'
 import { ProductCard } from './product-card'
-import { PackageOpen, AlertCircle } from 'lucide-react'
+import { PackageOpen, AlertCircle, Search } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
+import { Input } from '@/components/ui/input'
 
 interface ProductGridProps {
   onRecordSale: (product: Product) => void
@@ -16,11 +17,29 @@ export function ProductGrid({ onRecordSale }: ProductGridProps) {
   const { products } = useProductStore()
   const { t, language } = useLanguage()
   const [activeCategory, setActiveCategory] = useState<Category | 'all'>('all')
+  const [searchQuery, setSearchQuery] = useState('')
 
+  // Filter products by search query
+  const searchFiltered = useMemo(() => {
+    if (!searchQuery.trim()) return products
+    const query = searchQuery.trim().toLowerCase()
+    return products.filter((p) => {
+      const nameMatch = p.nameAr.toLowerCase().includes(query) || p.nameEn.toLowerCase().includes(query)
+      const descMatch = (p.descriptionAr || '').toLowerCase().includes(query) || (p.descriptionEn || '').toLowerCase().includes(query)
+      const catInfo = categories.find((c) => c.id === p.category)
+      const catMatch = catInfo
+        ? catInfo.nameAr.toLowerCase().includes(query) || catInfo.nameEn.toLowerCase().includes(query)
+        : false
+      const priceMatch = p.price.toString().includes(query)
+      return nameMatch || descMatch || catMatch || priceMatch
+    })
+  }, [products, searchQuery])
+
+  // Filter by category
   const filteredProducts =
     activeCategory === 'all'
-      ? products
-      : products.filter((p) => p.category === activeCategory)
+      ? searchFiltered
+      : searchFiltered.filter((p) => p.category === activeCategory)
 
   // Check which categories have no products at all
   const emptyCategories = categories.filter(
@@ -30,6 +49,9 @@ export function ProductGrid({ onRecordSale }: ProductGridProps) {
   // If we're viewing a specific category that is empty, show the out-of-stock message
   const isViewingEmptyCategory =
     activeCategory !== 'all' && emptyCategories.some((c) => c.id === activeCategory)
+
+  // Are we searching?
+  const isSearching = searchQuery.trim().length > 0
 
   if (products.length === 0) {
     return (
@@ -42,6 +64,18 @@ export function ProductGrid({ onRecordSale }: ProductGridProps) {
 
   return (
     <div className="p-4">
+      {/* Search bar */}
+      <div className="mb-4 relative">
+        <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder={t('searchProducts')}
+          className="ps-9 h-10 bg-muted/30 border-0 focus-visible:ring-1"
+        />
+      </div>
+
       {/* Category filter buttons */}
       <div className="mb-6 overflow-x-auto pb-2">
         <div className="flex gap-2 min-w-max">
@@ -81,7 +115,7 @@ export function ProductGrid({ onRecordSale }: ProductGridProps) {
       </div>
 
       {/* Empty category message */}
-      {isViewingEmptyCategory && (
+      {isViewingEmptyCategory && !isSearching && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -101,6 +135,15 @@ export function ProductGrid({ onRecordSale }: ProductGridProps) {
         </motion.div>
       )}
 
+      {/* Search results with no matches */}
+      {isSearching && filteredProducts.length === 0 && (
+        <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
+          <Search className="h-12 w-12 mb-3 opacity-40" />
+          <p className="text-lg">{t('noSearchResults')}</p>
+          <p className="text-sm mt-1">&quot;{searchQuery}&quot;</p>
+        </div>
+      )}
+
       {/* Products grid */}
       {!isViewingEmptyCategory && filteredProducts.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -116,7 +159,7 @@ export function ProductGrid({ onRecordSale }: ProductGridProps) {
       )}
 
       {/* No products in this non-empty category (filtered but empty) */}
-      {!isViewingEmptyCategory && filteredProducts.length === 0 && activeCategory !== 'all' && (
+      {!isViewingEmptyCategory && !isSearching && filteredProducts.length === 0 && activeCategory !== 'all' && (
         <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
           <PackageOpen className="h-16 w-16 mb-4 opacity-50" />
           <p className="text-lg">{t('noProducts')}</p>

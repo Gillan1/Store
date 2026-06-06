@@ -42,6 +42,7 @@ export const translations = {
   saleRecorded: { ar: 'تم تسجيل البيع بنجاح', en: 'Sale recorded successfully' },
   productAdded: { ar: 'تم إضافة المنتج بنجاح', en: 'Product added successfully' },
   productDeleted: { ar: 'تم حذف المنتج بنجاح', en: 'Product deleted successfully' },
+  productUpdated: { ar: 'تم تعديل المنتج بنجاح', en: 'Product updated successfully' },
   selectProduct: { ar: 'اختر منتجاً', en: 'Select a product' },
   addToList: { ar: 'إضافة للقائمة', en: 'Add to List' },
   noSalesYet: { ar: 'لا توجد مبيعات بعد', en: 'No sales yet' },
@@ -96,6 +97,35 @@ export const translations = {
   removeBankReceipt: { ar: 'إزالة الإشعار', en: 'Remove Receipt' },
   takePhoto: { ar: 'التقاط صورة', en: 'Take Photo' },
   changePhoto: { ar: 'تغيير الصورة', en: 'Change Photo' },
+  // Data backup (نسخ احتياطي)
+  dataBackup: { ar: 'النسخ الاحتياطي', en: 'Data Backup' },
+  exportData: { ar: 'تصدير البيانات', en: 'Export Data' },
+  importData: { ar: 'استيراد البيانات', en: 'Import Data' },
+  exportSuccess: { ar: 'تم تصدير البيانات بنجاح', en: 'Data exported successfully' },
+  importSuccess: { ar: 'تم استيراد البيانات بنجاح', en: 'Data imported successfully' },
+  importError: { ar: 'خطأ في استيراد البيانات. تأكد من صحة الملف', en: 'Error importing data. Make sure the file is correct' },
+  confirmImport: { ar: 'هل أنت متأكد من الاستيراد؟ سيتم استبدال البيانات الحالية', en: 'Are you sure you want to import? Current data will be replaced' },
+  exportDescription: { ar: 'تصدير جميع البيانات (المنتجات والمبيعات) كملف JSON للحفظ الاحتياطي', en: 'Export all data (products & sales) as JSON file for backup' },
+  importDescription: { ar: 'استيراد البيانات من ملف JSON محفوظ مسبقاً (سيتم استبدال البيانات الحالية)', en: 'Import data from a previously saved JSON file (current data will be replaced)' },
+  // Search (بحث)
+  searchProducts: { ar: 'البحث عن منتج...', en: 'Search products...' },
+  noSearchResults: { ar: 'لا توجد نتائج للبحث', en: 'No search results' },
+  // Statistics (إحصائيات)
+  statistics: { ar: 'الإحصائيات', en: 'Statistics' },
+  topSellingProducts: { ar: 'أكثر المنتجات مبيعاً', en: 'Top Selling Products' },
+  salesChart: { ar: 'رسم المبيعات البياني', en: 'Sales Chart' },
+  copyServiceStats: { ar: 'إحصائيات التصوير', en: 'Copy Service Stats' },
+  coloredCopies: { ar: 'صفحات ملونة', en: 'Colored Pages' },
+  normalCopies: { ar: 'صفحات عادية', en: 'Normal Pages' },
+  totalCopies: { ar: 'إجمالي الصفحات', en: 'Total Pages' },
+  last7Days: { ar: 'آخر 7 أيام', en: 'Last 7 Days' },
+  revenueLabel: { ar: 'الإيرادات', en: 'Revenue' },
+  salesCount: { ar: 'عدد المبيعات', en: 'Sales Count' },
+  // Stock alerts (تنبيهات المخزون)
+  stockAlerts: { ar: 'تنبيهات المخزون', en: 'Stock Alerts' },
+  lowStock: { ar: 'مخزون منخفض', en: 'Low Stock' },
+  lowStockMessage: { ar: 'لا يتبقى سوى منتج واحد في هذا القسم. فكر في إضافة المزيد!', en: 'Only 1 product left in this category. Consider adding more!' },
+  lowStockWarning: { ar: 'تحذير: الأقسام التالية لديها مخزون منخفض', en: 'Warning: The following categories have low stock' },
 } as const
 
 export type TranslationKey = keyof typeof translations

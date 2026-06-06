@@ -32,6 +32,7 @@ interface SalesState {
   sales: DailySale[]
   addSale: (sale: DailySale) => void
   deleteSale: (id: string) => void
+  setSales: (sales: DailySale[]) => void
 }
 
 export const useSalesStore = create<SalesState>()(
@@ -42,6 +43,7 @@ export const useSalesStore = create<SalesState>()(
         set((state) => ({ sales: [sale, ...state.sales] })),
       deleteSale: (id: string) =>
         set((state) => ({ sales: state.sales.filter((s) => s.id !== id) })),
+      setSales: (sales: DailySale[]) => set({ sales }),
     }),
     {
       name: 'sales-storage',

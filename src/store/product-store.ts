@@ -38,6 +38,7 @@ interface ProductState {
   addProduct: (product: Product) => void
   deleteProduct: (id: string) => void
   updateProduct: (id: string, updates: Partial<Product>) => void
+  setProducts: (products: Product[]) => void
 }
 
 const initialProducts: Product[] = [
@@ -152,6 +153,7 @@ export const useProductStore = create<ProductState>()(
         set((state) => ({
           products: state.products.map((p) => (p.id === id ? { ...p, ...updates } : p)),
         })),
+      setProducts: (products: Product[]) => set({ products }),
     }),
     {
       name: 'product-storage',
